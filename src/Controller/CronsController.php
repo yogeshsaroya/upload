@@ -54,9 +54,9 @@ class CronsController extends AppController
             'className' => 'Smtp', 
             //'className' => 'Debug',
             'tls' => true,
-            'port' => 587, 'host' => 'mail.roifelawgroup.com',
-            'username' => 'no_reply@roifelawgroup.com',
-            'password' => '0B}Dz.1O]guL'
+            'port' => 587, 'host' => 'mail.superpad.finance',
+            'username' => 'support@superpad.finance',
+            'password' => 'super@1234!'
         ]);
         $mailer = new Mailer('default');
         $mailer->setTransport('Manual');
@@ -70,7 +70,7 @@ class CronsController extends AppController
                     $msg = 'Hello, <br> New file uploaded, please download file from here ' . $url . ' ! <br>This file will be deleted after 24hrs';
                     $res = $mailer
                         ->setEmailFormat('both')
-                        ->setFrom(['no_reply@roifelawgroup.com' => 'No Reply'])
+                        ->setFrom(['support@superpad.finance' => 'No Reply'])
                         ->setTo('saroya.com@gmail.com')
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg);
