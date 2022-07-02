@@ -72,7 +72,7 @@ class CronsController extends AppController
                     $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['no_reply@roifelawgroup.com' => 'No Reply'])
-                        ->setTo('saroya.com@gmail.com')
+                        ->setTo('yogeshsaroya@gmail.com')
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg);
                       
