@@ -25,7 +25,7 @@ use Cake\Http\Exception\NotFoundException;
 use Cake\Http\Response;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Auth\DefaultPasswordHasher;
-
+use PhpParser\Node\Stmt\TryCatch;
 
 /**
  * Static content controller
@@ -43,7 +43,6 @@ class UsersController extends AppController
         parent::beforeFilter($event);
         /* https://book.cakephp.org/4/en/controllers/components/authentication.html#AuthComponent::allow */
         $this->Auth->allow(['login']);
-        
     }
 
 
@@ -55,17 +54,58 @@ class UsersController extends AppController
     public function upload()
     {
 
-        if ($this->request->is('ajax') ) {
-            if(!empty($this->request->getData())){
+        if ($this->request->is('ajax')) {
+            if (!empty($this->request->getData())) {
                 $file_name = null;
                 $postData = $this->request->getData();
-                pr($postData);die;
-                $uploadPath = 'cdn/team/';
+                $uploadPath = 'cdn/files/';
                 if (!file_exists($uploadPath)) {
                     mkdir($uploadPath, 0777, true);
                 }
+                try {
+                    if (!empty($postData['files'])) {
+                        $fileobject = $postData['files'];
+                        $file_name = rand(11111,99999)."-".$fileobject->getClientFilename();
+                        $destination = $uploadPath . $file_name;
+                        try {
+                            $fileobject->moveTo($destination);
+
+                            $getTbl = $this->Files->newEmptyEntity();
+
+                            $saveData['file_name'] = $file_name;
+                            $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
+
+                            if ($chkTbl->getErrors()) {
+                                $st = null;
+                                foreach ($chkTbl->getErrors() as $elist) {
+                                    foreach ($elist as $k => $v); {
+                                        $st .= "<div class='alert alert-danger'>" . ucwords($v) . "</div>";
+                                    }
+                                }
+                                echo $st;
+                                exit;
+                            } else {
+                                if ($this->Files->save($chkTbl)) {
+                                    echo "<script>$('.rm_div').html('');</script>";
+                                    echo "<div class='alert alert-success'>File has been uploaded.</div>";
+                                    
+                                } else {
+                                    echo '<div class="alert alert-danger" role="alert"> Not saved.</div>';
+                                }
+                            }
+
+
+
+                        } catch (Exception $e) {
+                            echo '<div class="alert alert-danger" role="alert">Image not uploaded.</div>';
+                            exit;
+                        }
+                    }else{ echo '<div class="alert alert-danger">Please select file.</div>'; }
+                } catch (\Throwable $th) {
+                    echo '<div class="alert alert-danger">Please try again.</div>';
+                }
             }
-            
+
             exit;
         }
     }
@@ -82,7 +122,7 @@ class UsersController extends AppController
         */
         $session = $this->getRequest()->getSession();
         $q = $this->request->getQuery();
-        
+
         if ($this->Auth->User('user_name') != "") {
             if ($this->request->is('ajax')) {
                 $u = SITEURL;
@@ -96,25 +136,21 @@ class UsersController extends AppController
         if ($this->request->is('ajax') && !empty($this->request->getData())) {
             $post_data = $this->request->getData();
             if (empty($post_data['user_name'])) {
-                
+
                 echo '<div class="alert alert-danger">Please enter user name.</div>';
             } elseif (empty($post_data['password'])) {
                 echo '<div class="alert alert-danger">Please enter password.</div>';
-            } 
-            elseif ( $post_data['user_name'] != 'client' || $post_data['password'] != 'roifelawgroup') {
+            } elseif ($post_data['user_name'] != 'client' || $post_data['password'] != 'roifelawgroup') {
                 echo '<div class="alert alert-danger">Username or password is incorrect.</div>';
-            } 
-            else {
-                            $this->Auth->setUser($post_data);
-                            $q_url = SITEURL;
-                            echo '<script>window.location.href = "' . $q_url . '"</script>';
-                            exit;
-                        
-                }
-                
-            
+            } else {
+                $this->Auth->setUser($post_data);
+                $q_url = SITEURL;
+                echo '<script>window.location.href = "' . $q_url . '"</script>';
+                exit;
+            }
+
+
             exit;
         }
     }
-    
 }

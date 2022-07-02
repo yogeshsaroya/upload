@@ -221,7 +221,8 @@ TypeFactory::map('time', StringType::class);
 define('SITEURL', 'http://localhost:8888/cakephp/upload/');
 define('MAIN_URL', 'https://roifelawgroup.com/');
 
-date_default_timezone_set('US/Eastern');
+//date_default_timezone_set('US/Eastern');
+date_default_timezone_set('asia/kolkata');
 define('WEBTITLE','Roife Law Group');
 define("DATE", date("Y-m-d H:i:s"));
 define("TODAYDATE", date("Y-m-d"));

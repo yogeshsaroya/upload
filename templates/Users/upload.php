@@ -52,11 +52,10 @@
 								<div class="qode-contact-form-7 qode-contact-form-7-0">
 									<div role="form" class="wpcf7" id="wpcf7-f679-p673-o1" lang="en-US" dir="ltr">
 										<?php echo $this->Form->create(null, ['autocomplete' => 'off', 'id' => 'e_frm', 'class' => 'auth-login-form mt-2', 'data-toggle' => 'validator']);  
-										echo $this->Form->hidden('type',['value'=>'2']);
 										?>
 
 										<div class="row">
-											<div class="col-sm-12">
+											<div class="col-sm-12 rm_div">
 												<div class="case-form-one__field">
 													<span class="wpcf7-form-control-wrap first-name">
 														<?php echo $this->Form->file('files', ['label' => 'File', 'required' => true]) ?>
@@ -71,7 +70,7 @@
 												<div id="frm_err"></div>
 
 											</div>
-											<div class="col-lg-12 col-md-12 col-sm-12">
+											<div class="col-lg-12 col-md-12 col-sm-12  rm_div">
 												<div class="case-form-one__field text-left mb-0">
 													<input type="button" value="Upload" class="wpcf7-form-control wpcf7-submit qbutton contact_form_button thm-btn case-form-one__btn" id="login_sbtn" />
 												</div>
