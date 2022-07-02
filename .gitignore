@@ -2,7 +2,6 @@
 ##########################
 
 /logs/*
-/tmp/*
 /webroot/cache/*
 /webroot/html
 /webroot/cdn
