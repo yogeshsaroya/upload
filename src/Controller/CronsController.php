@@ -54,7 +54,8 @@ class CronsController extends AppController
             'className' => 'Smtp', 
             //'className' => 'Debug',
             'tls' => true,
-            'port' => 587, 'host' => 'mail.roifelawgroup.com',
+            'port' => 587, 
+            'host' => 'mail.roifelawgroup.com',
             'username' => 'no_reply@roifelawgroup.com',
             'password' => '0B}Dz.1O]guL'
         ]);
