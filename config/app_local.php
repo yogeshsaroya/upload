@@ -25,7 +25,7 @@ return [
      *   You should treat it as extremely sensitive data.
      */
     'Security' => [
-        'salt' => env('SECURITY_SALT', '9e657fa1b6aebde173f723edbf4be1eedce254be69adbab4faaf243cd973494d'),
+        'salt' => env('SECURITY_SALT', 'a61b90d6d461cf273b3623b98be6537c273108922b7acaff7dbb4e3bf5a6129b'),
     ],
 
     /*
@@ -44,10 +44,10 @@ return [
              */
             //'port' => 'non_standard_port_number',
 
-            'username' => 'my_app',
-            'password' => 'secret',
+            'username' => 'root',
+            'password' => 'root',
 
-            'database' => 'my_app',
+            'database' => 'upload',
             /*
              * If not using the default 'public' schema with the PostgreSQL driver
              * set it here.
@@ -70,7 +70,7 @@ return [
             'password' => 'secret',
             'database' => 'test_myapp',
             //'schema' => 'myapp',
-            'url' => env('DATABASE_TEST_URL', null),
+            'url' => env('DATABASE_TEST_URL', 'sqlite://127.0.0.1/tests.sqlite'),
         ],
     ],
 
