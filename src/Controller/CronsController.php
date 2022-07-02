@@ -68,7 +68,7 @@ class CronsController extends AppController
             foreach ($data as $list) {
                 try {
                     $url = SITEURL . 'cdn/files/' . $list->file_name;
-                    $msg = 'Hello, <br> New file uploaded, please download file from here ' . $url . ' ! <br>This file will be deleted after 24hrs';
+                    $msg = 'Hello, <br><br> New file uploaded, please download file from here ' . $url . ' ! <br><br>This file will be deleted after 24hrs';
                     $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
