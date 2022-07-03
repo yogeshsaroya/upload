@@ -77,10 +77,11 @@ class CronsController extends AppController
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
                         
-                        $mailer->setFrom(['admin@roifelawgroup.com' => 'Admin'])
+                        $res = $mailer->setFrom(['admin@roifelawgroup.com' => 'Admin'])
                             ->setTo('yogeshsaroya@gmail.com')
                             ->setSubject('New File uploaded - ' . DATE)
                             ->deliver($msg);
+                            pr($res);
 
 
                     $up_arr = ['id' => $list->id, 'is_notified' => 2];
