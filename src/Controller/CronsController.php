@@ -69,19 +69,25 @@ class CronsController extends AppController
             foreach ($data as $list) {
                 try {
                     $url = SITEURL . 'cdn/files/' . $list->file_name;
-                    $msg = 'Hello, \n\n New file uploaded, please download file from here ' . $url . ' ! \n\n This file will be deleted after 24hrs';
+
+                    $msg = "<html><head><title>HTML email</title></head><body><p>Hello</p>
+                        <table><tr>
+                        <td>New file uploaded, please download file from here <a href='' . $url . ''>' . $url . '</a>!</td></tr>
+                        <tr><td>This file will be deleted after 24hrs</td></tr></table></body></html>";
+
+                    //$msg = 'Hello, \n\n New file uploaded, please download file from here ' . $url . ' ! \n\n This file will be deleted after 24hrs';
                     /* $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
                         ->setTo('admin@roifelawgroup.com')
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
-                        
-                        $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])
+
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])
                         ->setEmailFormat('both')
-                            ->setTo('yogeshsaroya@gmail.com')
-                            ->setSubject('New File uploaded - ' . DATE)
-                            ->deliver($msg);
+                        ->setTo('yogeshsaroya@gmail.com')
+                        ->setSubject('New File uploaded - ' . DATE)
+                        ->deliver($msg);
 
                     $up_arr = ['id' => $list->id, 'is_notified' => 2];
                     $saveData = $this->Files->newEntity($up_arr, ['validate' => false]);
@@ -120,7 +126,6 @@ class CronsController extends AppController
                 }
 
                 $this->Files->delete($list);
-
             }
         } else {
             pr('empty');
@@ -131,16 +136,16 @@ class CronsController extends AppController
 
     public function allFiles()
     {
-        
+
         $data = $this->Files->find()->all();
         if (!$data->isEmpty()) {
             echo "<ul>";
             foreach ($data as $list) {
-                $full_path = SITEURL.'cdn/files/' . $list->file_name;
-                echo '<li style="padding: 10px;list-style-type: disclosure-closed;}"><a href="'.$full_path.'" target="_blank">'.$list->file_name.'</a></li>';
+                $full_path = SITEURL . 'cdn/files/' . $list->file_name;
+                echo '<li style="padding: 10px;list-style-type: disclosure-closed;}"><a href="' . $full_path . '" target="_blank">' . $list->file_name . '</a></li>';
             }
             echo "</ul>";
-        }else{
+        } else {
             echo "Empty";
         }
         exit;
