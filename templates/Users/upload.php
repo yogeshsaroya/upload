@@ -102,7 +102,7 @@
 
 
 		$("#login_sbtn").click(function() {
-			$('#f_err').html('');
+			$('#frm_err').html('');
 			$("#e_frm").ajaxForm({
 				target: '#frm_err',
 				headers: {
@@ -117,7 +117,7 @@
 					$("#login_sbtn").val('Upload');
 				},
 				error: function(response) {
-					$('#f_err').html('<div class="alert alert-danger">Sorry, this is not working at the moment. Please try again later.</div>');
+					$('#frm_err').html('<div class="alert alert-danger">Sorry, this is not working at the moment. Please try again later.</div>');
 					$("#login_sbtn").prop("disabled", false);
 					$("#login_sbtn").val('Upload');
 				},
