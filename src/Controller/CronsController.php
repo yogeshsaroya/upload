@@ -73,12 +73,12 @@ class CronsController extends AppController
                     /* $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
-                        ->setTo('yogeshsaroya@gmail.com')
+                        ->setTo('admin@roifelawgroup.com')
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
                         
-                        $res = $mailer->setFrom(['admin@roifelawgroup.com' => 'Admin'])
-                            ->setTo('yogeshsaroya@gmail.com')
+                        $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])
+                            ->setTo('admin@roifelawgroup.com')
                             ->setSubject('New File uploaded - ' . DATE)
                             ->deliver($msg);
                             pr($res);
