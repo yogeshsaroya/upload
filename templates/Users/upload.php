@@ -63,7 +63,7 @@
 											<div class="col-sm-12 rm_div">
 												<div class="case-form-one__field">
 													<span class="wpcf7-form-control-wrap first-name">
-														<?php echo $this->Form->file('files', ['label' => 'File', 'required' => true]) ?>
+														<?php echo $this->Form->file('files.', ['multiple'=>'multiple', 'label' => 'File', 'required' => true]) ?>
 
 													</span>
 												</div>

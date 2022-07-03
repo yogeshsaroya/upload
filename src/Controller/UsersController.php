@@ -63,43 +63,30 @@ class UsersController extends AppController
                     mkdir($uploadPath, 0777, true);
                 }
                 try {
-                    if (!empty($postData['files'])) {
-                        $fileobject = $postData['files'];
-                        $file_name = rand(11111,99999)."-".$fileobject->getClientFilename();
-                        $destination = $uploadPath . $file_name;
-                        try {
-                            $fileobject->moveTo($destination);
-
-                            $getTbl = $this->Files->newEmptyEntity();
-
-                            $saveData['file_name'] = $file_name;
-                            $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
-
-                            if ($chkTbl->getErrors()) {
-                                $st = null;
-                                foreach ($chkTbl->getErrors() as $elist) {
-                                    foreach ($elist as $k => $v); {
-                                        $st .= "<div class='alert alert-danger'>" . ucwords($v) . "</div>";
-                                    }
-                                }
-                                echo $st;
-                                exit;
-                            } else {
-                                if ($this->Files->save($chkTbl)) {
-                                    echo "<script>$('.rm_div').html('');</script>";
-                                    echo "<div class='alert alert-success'>File has been uploaded.</div>";
-                                    
-                                } else {
-                                    echo '<div class="alert alert-danger" role="alert"> Not saved.</div>';
-                                }
-                            }
-
-
-
-                        } catch (Exception $e) {
-                            echo '<div class="alert alert-danger" role="alert">Image not uploaded.</div>';
-                            exit;
+                    if (!empty($postData['files'][0])) {
+                        $chk = 0;
+                        foreach($postData['files'] as $fileobject){
+                            $saveData = null;
+                            $file_name = rand(11111,99999)."-".$fileobject->getClientFilename();
+                            $destination = $uploadPath . $file_name;
+                            try {
+                                $fileobject->moveTo($destination);
+                                $getTbl = $this->Files->newEmptyEntity();
+    
+                                $saveData['file_name'] = $file_name;
+                                $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
+                                if ($this->Files->save($chkTbl)) { 
+                                    $chk++;
+                                } 
+                            } catch (Exception $e) { }    
                         }
+                        if($chk > 0 ){
+                            echo "<script>$('.rm_div').html('');</script>";
+                            echo "<div class='alert alert-success'>File has been uploaded.</div>";
+                        }else{
+                            echo '<div class="alert alert-danger" role="alert">Image not uploaded.</div>'; exit;
+                        }
+                        
                     }else{ echo '<div class="alert alert-danger">Please select file.</div>'; }
                 } catch (\Throwable $th) {
                     echo '<div class="alert alert-danger">Please try again.</div>';
