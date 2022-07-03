@@ -71,8 +71,10 @@ class CronsController extends AppController
                     $url = SITEURL . 'cdn/files/' . $list->file_name;
 
                     $msg = "<html><head><title>HTML email</title></head><body><p>Hello</p>
-                        <table><tr>
-                        <td>New file uploaded, please download file from here <a href='' . $url . ''>' . $url . '</a>!</td></tr>
+                        <table>
+                        <tr><td></td></tr>
+                        <tr><td>New file uploaded, please download file from here <a href='$url'>$url</a>!</td></tr>
+                        <tr><td></td></tr>
                         <tr><td>This file will be deleted after 24hrs</td></tr></table></body></html>";
 
                     //$msg = 'Hello, \n\n New file uploaded, please download file from here ' . $url . ' ! \n\n This file will be deleted after 24hrs';
