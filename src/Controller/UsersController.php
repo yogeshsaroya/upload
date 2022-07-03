@@ -26,6 +26,8 @@ use Cake\Http\Response;
 use Cake\View\Exception\MissingTemplateException;
 use Cake\Auth\DefaultPasswordHasher;
 use PhpParser\Node\Stmt\TryCatch;
+use Cake\Utility\Text;
+
 
 /**
  * Static content controller
@@ -67,7 +69,11 @@ class UsersController extends AppController
                         $chk = 0;
                         foreach($postData['files'] as $fileobject){
                             $saveData = null;
-                            $file_name = rand(11111,99999)."-".$fileobject->getClientFilename();
+                            $file_1 = $fileobject->getClientFilename();
+                            $name = pathinfo($file_1, PATHINFO_FILENAME);
+                            $ext = pathinfo($file_1, PATHINFO_EXTENSION);
+                            $file_name = Text::slug(rand(11111,99999)."-".$name).".".$ext;
+                            
                             $destination = $uploadPath . $file_name;
                             try {
                                 $fileobject->moveTo($destination);
