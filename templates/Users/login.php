@@ -104,6 +104,7 @@
 
 
 		$("#login_sbtn").click(function() {
+			$('#f_err').html('');
 			$("#e_frm").ajaxForm({
 				target: '#frm_err',
 				headers: {
