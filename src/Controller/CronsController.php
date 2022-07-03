@@ -87,7 +87,6 @@ class CronsController extends AppController
                     $up_arr = ['id' => $list->id, 'is_notified' => 3];
                     $saveData = $this->Files->newEntity($up_arr, ['validate' => false]);
                     $this->Files->save($saveData);
-                    pr($th);
                     pr('<div style="color: red;"><b>Email has been failed</b></div>');
                 }
             }
