@@ -78,11 +78,10 @@ class CronsController extends AppController
                         ->deliver($msg); */
                         
                         $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])
+                        ->setEmailFormat('both')
                             ->setTo('yogeshsaroya@gmail.com')
                             ->setSubject('New File uploaded - ' . DATE)
                             ->deliver($msg);
-                            pr($res);
-
 
                     $up_arr = ['id' => $list->id, 'is_notified' => 2];
                     $saveData = $this->Files->newEntity($up_arr, ['validate' => false]);
