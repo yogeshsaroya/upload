@@ -2,9 +2,13 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 <style>
 	#frm_err {
-		padding: 10px;
+		padding: 10px 10px 10px 0px;
 		color: red;
 	}
+	#e_frm .wpcf7-form-control {    border: 1px solid #c3c3c3;border-radius: 3px;}
+	.elementor-text-editor.elementor-clearfix {
+    margin-left: 24px;
+}
 </style>
 
 

@@ -68,7 +68,7 @@ class CronsController extends AppController
             foreach ($data as $list) {
                 try {
                     $url = SITEURL . 'cdn/files/' . $list->file_name;
-                    $msg = 'Hello, <br><br> New file uploaded, please download file from here ' . $url . ' ! <br><br>This file will be deleted after 24hrs';
+                    $msg = 'Hello, <br><br> New file uploaded, please download file from here ' . $url . ' ! <br><br> This file will be deleted after 24hrs';
                     $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
@@ -130,10 +130,14 @@ class CronsController extends AppController
         
         $data = $this->Files->find()->all();
         if (!$data->isEmpty()) {
+            echo "<ul>";
             foreach ($data as $list) {
                 $full_path = SITEURL.'cdn/files/' . $list->file_name;
-                pr('<a href="'.$full_path.'" target="_blank">'.$list->file_name.'</a>');
+                echo '<li style="padding: 10px;list-style-type: disclosure-closed;}"><a href="'.$full_path.'" target="_blank">'.$list->file_name.'</a></li>';
             }
+            echo "</ul>";
+        }else{
+            echo "Empty";
         }
         exit;
     }

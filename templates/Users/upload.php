@@ -1,10 +1,14 @@
 <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.form/4.3.0/jquery.form.min.js" integrity="sha384-qlmct0AOBiA2VPZkMY3+2WqkHtIQ9lSdAsAn5RUJD/3vA5MKDgSGcdmIv4ycVxyn" crossorigin="anonymous"></script>
 <style>
-	#frm_err {
-		padding: 10px;
+		#frm_err {
+		padding: 10px 10px 10px 0px;
 		color: red;
 	}
+	#e_frm .wpcf7-form-control {    border: 1px solid #c3c3c3;border-radius: 3px;}
+	.elementor-text-editor.elementor-clearfix {
+    margin-left: 24px;
+}
 </style>
 
 
@@ -41,9 +45,10 @@
 							<div class="elementor-widget-container">
 								<div class="elementor-text-editor elementor-clearfix">
 									<h3 class="block-title__title">Upload File</h3>
-								</div>
-								<br>
+									<br>
 								<hr>
+								</div>
+								
 								
 							</div>
 						</div>
@@ -104,7 +109,7 @@
 				},
 				beforeSubmit: function() {
 					$("#login_sbtn").prop("disabled", true);
-					$("#login_sbtn").val('Please wait..');
+					$("#login_sbtn").val('uploading....');
 				},
 				success: function(response) {
 					$("#login_sbtn").prop("disabled", false);
