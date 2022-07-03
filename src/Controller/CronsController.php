@@ -50,6 +50,7 @@ class CronsController extends AppController
     public function sendEmail()
     {
 
+        /*
         TransportFactory::setConfig('Manual', [
             'className' => 'Smtp', 
             //'className' => 'Debug',
@@ -58,9 +59,9 @@ class CronsController extends AppController
             'host' => 'smtp.office365.com',
             'username' => 'admin@roifelawgroup.com',
             'password' => '@dmin365'
-        ]);
+        ]);*/
         $mailer = new Mailer('default');
-        $mailer->setTransport('Manual');
+        /*$mailer->setTransport('Manual');*/
 
         $query = $this->Files->find('all')->where(['Files.is_notified' => 1])->limit(10);
         $data = $query->all()->toArray();
@@ -69,13 +70,17 @@ class CronsController extends AppController
                 try {
                     $url = SITEURL . 'cdn/files/' . $list->file_name;
                     $msg = 'Hello, <br><br> New file uploaded, please download file from here ' . $url . ' ! <br><br> This file will be deleted after 24hrs';
-                    $res = $mailer
+                    /* $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
                         ->setTo('yogeshsaroya@gmail.com')
                         ->setSubject('New File uploaded - ' . DATE)
-                        ->deliver($msg);
-                      
+                        ->deliver($msg); */
+                        
+                        $mailer->setFrom(['admin@roifelawgroup.com' => 'Admin'])
+                            ->setTo('yogeshsaroya@gmail.com')
+                            ->setSubject('New File uploaded - ' . DATE)
+                            ->deliver($msg);
 
 
                     $up_arr = ['id' => $list->id, 'is_notified' => 2];
