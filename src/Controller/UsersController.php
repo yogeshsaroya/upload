@@ -101,7 +101,8 @@ class UsersController extends AppController
                             exit;
                         }
                     }else{ echo '<div class="alert alert-danger">Please select file.</div>'; }
-                } catch (\Throwable $th) {
+                } catch (Exception $e) {
+                    pr($e);
                     echo '<div class="alert alert-danger">Please try again.</div>';
                 }
             }
