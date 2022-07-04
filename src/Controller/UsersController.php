@@ -53,7 +53,7 @@ class UsersController extends AppController
         $this->redirect(SITEURL);
     }
 
-    public function _up_files($data,$id,$folder){
+    public function _up_files($data,$client_id,$folder){
         $uploadPath = "cdn/files/$folder/";
         if (!file_exists($uploadPath)) { mkdir($uploadPath, 0777, true); }
         $chk = 0;
@@ -70,7 +70,7 @@ class UsersController extends AppController
                     $fileobject->moveTo($destination);
                     $getTbl = $this->Files->newEmptyEntity();
                     $saveData['file_name'] = $file_name;
-                    $saveData['client_id'] = $id;
+                    $saveData['client_id'] = $client_id;
                     $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
                     if ($this->Files->save($chkTbl)) { $chk++; } 
                 } catch (Exception $e) { }    
@@ -107,7 +107,7 @@ class UsersController extends AppController
                     try {
                         if ($this->Clients->save($client)) {
                             $id = $client->id;
-                            $tot = $this->_up_files($files, $id,$postData['folder']);
+                            $tot = $this->_up_files($files,$id,$postData['folder']);
                             if($tot > 0 ){
                                 echo "<script>$('.rm_div').html('');</script>";
                                 echo "<div class='alert alert-success'>Total $tot Files has been uploaded.</div>";
