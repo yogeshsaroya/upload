@@ -94,11 +94,9 @@ class CronsController extends AppController
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
 
-                    //->setTo('admin@roifelawgroup.com')
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('yogeshsaroya@gmail.com')->setSubject('New Files uploaded - ' . DATE) ->deliver($msg);
-                    //->setTo($list->email)
-                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('yogeshsaroya@gmail.com')->setSubject('Files uploaded on ' . DATE) ->deliver($msg_user);
-
+                    
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')->setSubject('New Files uploaded - ' . DATE) ->deliver($msg);
+                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('$list->email')->setSubject('Files uploaded on ' . DATE) ->deliver($msg_user);
                     
                     $list->is_notified = 2;
                     $this->Clients->save($list);
