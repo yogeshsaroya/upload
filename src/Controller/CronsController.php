@@ -114,7 +114,7 @@ class CronsController extends AppController
     */
     public function remove()
     {
-        $date = date('Y-m-d H:i:s', strtotime('-24 hours', strtotime(DATE)));
+        $date = date('Y-m-d H:i:s', strtotime('-8 hours', strtotime(DATE)));
         $data = $this->Files->find()->where(['Files.is_notified' => 2, 'Files.created <=' => $date])->all();
         if (!$data->isEmpty()) {
             foreach ($data as $list) {

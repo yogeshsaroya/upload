@@ -9,6 +9,9 @@
 	.elementor-text-editor.elementor-clearfix {
     margin-left: 24px;
 }
+.col-sm-12.rm_div {
+    padding-bottom: 20px;
+}
 </style>
 
 
@@ -44,7 +47,7 @@
 						<div class="elementor-element elementor-element-7ae3d87 block-title text-left elementor-widget elementor-widget-text-editor" data-id="7ae3d87" data-element_type="widget" data-widget_type="text-editor.default">
 							<div class="elementor-widget-container">
 								<div class="elementor-text-editor elementor-clearfix">
-									<h3 class="block-title__title">Upload File</h3>
+									<h3 class="block-title__title">Upload Files</h3>
 									<br>
 								<hr>
 								</div>
@@ -58,32 +61,21 @@
 									<div role="form" class="wpcf7" id="wpcf7-f679-p673-o1" lang="en-US" dir="ltr">
 										<?php echo $this->Form->create(null, ['autocomplete' => 'off', 'id' => 'e_frm', 'class' => 'auth-login-form mt-2', 'data-toggle' => 'validator']);  
 										?>
-
 										<div class="row">
-											<div class="col-sm-12 rm_div">
-												<div class="case-form-one__field">
-													<span class="wpcf7-form-control-wrap first-name">
-														<?php echo $this->Form->file('files.', ['multiple'=>'multiple', 'label' => 'File', 'required' => true]) ?>
-
-													</span>
-												</div>
-												</p>
-											</div>
-
-											<div class="col-lg-12 col-md-12 col-sm-12">
-
-												<div id="frm_err"></div>
-
-											</div>
-											<div class="col-lg-12 col-md-12 col-sm-12  rm_div">
-												<div class="case-form-one__field text-left mb-0">
-													<input type="button" value="Upload" class="wpcf7-form-control wpcf7-submit qbutton contact_form_button thm-btn case-form-one__btn" id="login_sbtn" />
-												</div>
-											</div>
-											<p>
-												<!-- /.col-md-6 col-sm-12 -->
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><span class="wpcf7-form-control-wrap first-name"><?php echo $this->Form->file('files_1.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></span></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><span class="wpcf7-form-control-wrap first-name"><?php echo $this->Form->file('files_2.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></span></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><span class="wpcf7-form-control-wrap first-name"><?php echo $this->Form->file('files_3.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></span></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><span class="wpcf7-form-control-wrap first-name"><?php echo $this->Form->file('files_4.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></span></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><span class="wpcf7-form-control-wrap first-name"><?php echo $this->Form->file('files_5.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></span></div></div>
+										<div class="col-lg-12 col-md-12 col-sm-12">
+										<div id="frm_err"></div>
 										</div>
-
+										<div class="col-lg-12 col-md-12 col-sm-12  rm_div">
+											<div class="case-form-one__field text-left mb-0">
+												<input type="button" value="Upload" class="wpcf7-form-control wpcf7-submit qbutton contact_form_button thm-btn case-form-one__btn" id="login_sbtn" />
+											</div>
+										</div>
+										</div>
 										<?php echo $this->Form->end(); ?>
 										<br><br><br>
 									</div>

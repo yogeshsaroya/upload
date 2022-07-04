@@ -53,47 +53,57 @@ class UsersController extends AppController
         $this->redirect(SITEURL);
     }
 
+    public function _up_files($data){
+        $uploadPath = 'cdn/files/';
+        if (!file_exists($uploadPath)) {
+              mkdir($uploadPath, 0777, true);
+        }
+        $chk = 0;
+        if(!empty($data)){
+            foreach($data as $fileobject){
+                $file_name = null;
+                $saveData = null;
+                $file_1 = $fileobject->getClientFilename();
+                $name = pathinfo($file_1, PATHINFO_FILENAME);
+                $ext = pathinfo($file_1, PATHINFO_EXTENSION);
+                $file_name = Text::slug(rand(11111,99999)."-".$name).".".$ext;
+                
+                $destination = $uploadPath . $file_name;
+                try {
+                    $fileobject->moveTo($destination);
+                    $getTbl = $this->Files->newEmptyEntity();
+                    $saveData['file_name'] = $file_name;
+                    $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
+                    if ($this->Files->save($chkTbl)) { $chk++; } 
+                } catch (Exception $e) { }    
+            }
+        }
+        return $chk;
+        
+    }
+
     public function upload()
     {
 
         if ($this->request->is('ajax')) {
             if (!empty($this->request->getData())) {
-                $file_name = null;
+                $a1 = $a2 = $a3 = $a4 = $a5 = 0;
                 $postData = $this->request->getData();
-                $uploadPath = 'cdn/files/';
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
-                }
                 try {
-                    if (!empty($postData['files'][0])) {
-                        $chk = 0;
-                        foreach($postData['files'] as $fileobject){
-                            $saveData = null;
-                            $file_1 = $fileobject->getClientFilename();
-                            $name = pathinfo($file_1, PATHINFO_FILENAME);
-                            $ext = pathinfo($file_1, PATHINFO_EXTENSION);
-                            $file_name = Text::slug(rand(11111,99999)."-".$name).".".$ext;
-                            
-                            $destination = $uploadPath . $file_name;
-                            try {
-                                $fileobject->moveTo($destination);
-                                $getTbl = $this->Files->newEmptyEntity();
-    
-                                $saveData['file_name'] = $file_name;
-                                $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
-                                if ($this->Files->save($chkTbl)) { 
-                                    $chk++;
-                                } 
-                            } catch (Exception $e) { }    
-                        }
-                        if($chk > 0 ){
+                    if (!empty($postData['files_1'][0])) { $a1 = $this->_up_files($postData['files_1']); }
+                    if (!empty($postData['files_2'][0])) { $a2 = $this->_up_files($postData['files_2']); }
+                    if (!empty($postData['files_3'][0])) { $a3 = $this->_up_files($postData['files_3']); }
+                    if (!empty($postData['files_4'][0])) { $a4 = $this->_up_files($postData['files_4']); }
+                    if (!empty($postData['files_5'][0])) { $a5 = $this->_up_files($postData['files_5']); }
+                    $tot = $a1 + $a2 + $a3 + $a4 + $a5;
+                        if($tot > 0 ){
                             echo "<script>$('.rm_div').html('');</script>";
-                            echo "<div class='alert alert-success'>File has been uploaded.</div>";
+                            echo "<div class='alert alert-success'>Totla $tot Files has been uploaded.</div>";
                         }else{
-                            echo '<div class="alert alert-danger" role="alert">Image not uploaded.</div>'; exit;
+                            echo '<div class="alert alert-danger" role="alert">Image not uploaded. Please select files.</div>'; exit;
                         }
                         
-                    }else{ echo '<div class="alert alert-danger">Please select file.</div>'; }
+                    
                 } catch (\Throwable $th) {
                     echo '<div class="alert alert-danger">Please try again.</div>';
                 }
