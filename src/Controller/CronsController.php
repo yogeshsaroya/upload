@@ -63,19 +63,28 @@ class CronsController extends AppController
         $mailer = new Mailer('default');
         /*$mailer->setTransport('Manual');*/
 
-        $query = $this->Files->find('all')->where(['Files.is_notified' => 1])->limit(10);
-        $data = $query->all()->toArray();
-        if (!empty($data)) {
+        
+        $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' =>1])->limit(10)->all();
+        if ( !$data->isEmpty() ) {
             foreach ($data as $list) {
+                $ul = $li = null;
+                if(!empty($list->files)){
+                    foreach ($list->files as $fl) {
+                        $full_path = SITEURL . 'cdn/files/' . $list->folder . "/" . $fl->file_name;
+                        $li.='<li style="padding: 10px;list-style-type: disclosure-closed;"><a href="' . $full_path . '" target="_blank">' . $fl->file_name . '</a></li>';
+                    }
+                    $ul = "<ul>$li</ul>";
                 try {
-                    $url = SITEURL . 'cdn/files/' . $list->file_name;
+                    $msg = "<html><head><title>Email</title></head><body><table><tr><td>Hello Admin</td></tr><tr><td><br></td></tr>
+                        <tr><td>New files uploaded by : -</td></tr><tr><td></td></tr>
+                        <tr><td>Full Name : $list->full_name</td></tr><tr><td>Email : $list->email</td></tr><tr><td>Mobile Number : $list->phone</td></tr><tr><td><br></td></tr>
+                        <tr><td>List of uploaded files:</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
+                        <tr><td>This file will be deleted after 8hrs. <br>Thanks </td></tr></table></body></html>";
 
-                    $msg = "<html><head><title>HTML email</title></head><body><p>Hello</p>
-                        <table>
-                        <tr><td></td></tr>
-                        <tr><td>New file uploaded, please download file from here <a href='$url'>$url</a>!</td></tr>
-                        <tr><td></td></tr>
-                        <tr><td>This file will be deleted after 24hrs</td></tr></table></body></html>";
+                    $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
+                        <tr><td>This is the confirmation email of bellow files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
+                        <tr><td><br>Thanks </td></tr></table></body></html>";
+                        
 
                     //$msg = 'Hello, \n\n New file uploaded, please download file from here ' . $url . ' ! \n\n This file will be deleted after 24hrs';
                     /* $res = $mailer
@@ -85,23 +94,22 @@ class CronsController extends AppController
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
 
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])
-                        ->setEmailFormat('both')
-                        ->setTo('admin@roifelawgroup.com')
-                        ->setSubject('New File uploaded - ' . DATE)
-                        ->deliver($msg);
+                    //->setTo('admin@roifelawgroup.com')
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('yogeshsaroya@gmail.com')->setSubject('New Files uploaded - ' . DATE) ->deliver($msg);
+                    //->setTo($list->email)
+                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('yogeshsaroya@gmail.com')->setSubject('Files uploaded on ' . DATE) ->deliver($msg_user);
 
-                    $up_arr = ['id' => $list->id, 'is_notified' => 2];
-                    $saveData = $this->Files->newEntity($up_arr, ['validate' => false]);
-                    $this->Files->save($saveData);
+                    
+                    $list->is_notified = 2;
+                    $this->Clients->save($list);
                     pr('<div style="color: green;">Email has been sent</div>');
                 } catch (\Throwable $th) {
 
-                    $up_arr = ['id' => $list->id, 'is_notified' => 3];
-                    $saveData = $this->Files->newEntity($up_arr, ['validate' => false]);
-                    $this->Files->save($saveData);
+                    $list->is_notified = 3;
+                    $this->Clients->save($list);
                     pr('<div style="color: red;"><b>Email has been failed</b></div>');
                 }
+            }
             }
         }
 
@@ -115,19 +123,18 @@ class CronsController extends AppController
     public function remove()
     {
         $date = date('Y-m-d H:i:s', strtotime('-8 hours', strtotime(DATE)));
-        $data = $this->Files->find()->where(['Files.is_notified' => 2, 'Files.created <=' => $date])->all();
+        $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' => 2, 'Clients.created <=' => $date])->all();
         if (!$data->isEmpty()) {
             foreach ($data as $list) {
-                $full_path = 'cdn/files/' . $list->file_name;
+                $full_path = 'cdn/files/' . $list->folder;
                 if (file_exists($full_path)) {
-                    $file = new File($full_path);
-                    $file->delete();
-                    pr("File was exists and deleted");
-                } else {
-                    pr("File not exists");
-                }
-
-                $this->Files->delete($list);
+                    $folder = new Folder($full_path);
+                    if ($folder->delete()) {
+                        pr("File was exists and deleted");
+                    }
+                } else { pr("File not exists"); }
+                $this->Clients->delete($list);
+                $this->Files->deleteMany($list['files']);
             }
         } else {
             pr('empty');
@@ -139,11 +146,11 @@ class CronsController extends AppController
     public function allFiles()
     {
 
-        $data = $this->Files->find()->all();
+        $data = $this->Files->find()->contain(['Clients'])->all();
         if (!$data->isEmpty()) {
             echo "<ul>";
             foreach ($data as $list) {
-                $full_path = SITEURL . 'cdn/files/' . $list->file_name;
+                $full_path = SITEURL . 'cdn/files/'.$list->client->folder."/". $list->file_name;
                 echo '<li style="padding: 10px;list-style-type: disclosure-closed;}"><a href="' . $full_path . '" target="_blank">' . $list->file_name . '</a></li>';
             }
             echo "</ul>";

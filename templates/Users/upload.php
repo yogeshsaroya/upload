@@ -12,6 +12,7 @@
 .col-sm-12.rm_div {
     padding-bottom: 20px;
 }
+.user_info{ padding-bottom: 0px !important}
 </style>
 
 
@@ -62,11 +63,15 @@
 										<?php echo $this->Form->create(null, ['autocomplete' => 'off', 'id' => 'e_frm', 'class' => 'auth-login-form mt-2', 'data-toggle' => 'validator']);  
 										?>
 										<div class="row">
-										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files <small>(can select multiple files)</small><?php echo $this->Form->file('files_1.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
-										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files <small>(can select multiple files)</small><?php echo $this->Form->file('files_2.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
-										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files <small>(can select multiple files)</small><?php echo $this->Form->file('files_3.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
-										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files <small>(can select multiple files)</small><?php echo $this->Form->file('files_4.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
-										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files <small>(can select multiple files)</small><?php echo $this->Form->file('files_5.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div></div>
+										<div class="col-sm-12 rm_div user_info"><div class="case-form-one__field"><?php echo $this->Form->control('full_name', ['type' => 'text', 'class' => 'wpcf7-form-control wpcf7-text placeholder', 'label' =>['escape' => false, 'text' => 'Full Name <small>(required)</small>'],'required' => true]); ?></div></div>
+										<div class="col-sm-12 rm_div user_info"><div class="case-form-one__field"><?php echo $this->Form->control('email', ['type' => 'email', 'class' => 'wpcf7-form-control wpcf7-text placeholder', 'label' => ['escape' => false, 'text' => 'Email Address <small>(required)</small>'],'required' => true]); ?></div></div>
+										<div class="col-sm-12 rm_div user_info"><div class="case-form-one__field"><?php echo $this->Form->control('phone', ['type' => 'tel', 'class' => 'wpcf7-form-control wpcf7-text placeholder', 'label' => ['escape' => false, 'text' => 'Mobile Number <small>(required)</small>'],'required' => true]); ?></div></div>
+
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files - 1 <small>(can select multiple files)</small><?php echo $this->Form->file('files_1.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files - 2 <small>(can select multiple files)</small><?php echo $this->Form->file('files_2.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files - 3<small>(can select multiple files)</small><?php echo $this->Form->file('files_3.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files - 4<small>(can select multiple files)</small><?php echo $this->Form->file('files_4.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div><hr></div>
+										<div class="col-sm-12 rm_div"><div class="case-form-one__field"><label>Files - 5<small>(can select multiple files)</small><?php echo $this->Form->file('files_5.', ['multiple'=>'multiple', 'label' => 'File', 'required' => false]) ?></label></div></div>
 										<div class="col-lg-12 col-md-12 col-sm-12">
 										<div id="frm_err"></div>
 										</div>

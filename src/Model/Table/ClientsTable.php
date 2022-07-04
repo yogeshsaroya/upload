@@ -6,12 +6,12 @@ use Cake\Event\EventInterface;
 use Cake\ORM\Table;
 use Cake\Validation\Validator;
 
-class FilesTable extends Table
+class ClientsTable extends Table
 {
     public function initialize(array $config): void
     {
         $this->addBehavior('Timestamp');
-        $this->belongsTo('Clients');
+        $this->hasMany('Files');
     }
   
 

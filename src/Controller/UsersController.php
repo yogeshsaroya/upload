@@ -53,11 +53,9 @@ class UsersController extends AppController
         $this->redirect(SITEURL);
     }
 
-    public function _up_files($data){
-        $uploadPath = 'cdn/files/';
-        if (!file_exists($uploadPath)) {
-              mkdir($uploadPath, 0777, true);
-        }
+    public function _up_files($data,$id,$folder){
+        $uploadPath = "cdn/files/$folder/";
+        if (!file_exists($uploadPath)) { mkdir($uploadPath, 0777, true); }
         $chk = 0;
         if(!empty($data)){
             foreach($data as $fileobject){
@@ -67,12 +65,12 @@ class UsersController extends AppController
                 $name = pathinfo($file_1, PATHINFO_FILENAME);
                 $ext = pathinfo($file_1, PATHINFO_EXTENSION);
                 $file_name = Text::slug(rand(11111,99999)."-".$name).".".$ext;
-                
                 $destination = $uploadPath . $file_name;
                 try {
                     $fileobject->moveTo($destination);
                     $getTbl = $this->Files->newEmptyEntity();
                     $saveData['file_name'] = $file_name;
+                    $saveData['client_id'] = $id;
                     $chkTbl = $this->Files->patchEntity($getTbl, $saveData, ['validate' => false]);
                     if ($this->Files->save($chkTbl)) { $chk++; } 
                 } catch (Exception $e) { }    
@@ -89,26 +87,37 @@ class UsersController extends AppController
             if (!empty($this->request->getData())) {
                 $a1 = $a2 = $a3 = $a4 = $a5 = 0;
                 $postData = $this->request->getData();
-                try {
-                    if (!empty($postData['files_1'][0])) { $a1 = $this->_up_files($postData['files_1']); }
-                    if (!empty($postData['files_2'][0])) { $a2 = $this->_up_files($postData['files_2']); }
-                    if (!empty($postData['files_3'][0])) { $a3 = $this->_up_files($postData['files_3']); }
-                    if (!empty($postData['files_4'][0])) { $a4 = $this->_up_files($postData['files_4']); }
-                    if (!empty($postData['files_5'][0])) { $a5 = $this->_up_files($postData['files_5']); }
-                    $tot = $a1 + $a2 + $a3 + $a4 + $a5;
-                        if($tot > 0 ){
-                            echo "<script>$('.rm_div').html('');</script>";
-                            echo "<div class='alert alert-success'>Totla $tot Files has been uploaded.</div>";
-                        }else{
-                            echo '<div class="alert alert-danger" role="alert">Image not uploaded. Please select files.</div>'; exit;
-                        }
-                        
-                    
-                } catch (\Throwable $th) {
-                    echo '<div class="alert alert-danger">Please try again.</div>';
+
+                if( empty($postData['full_name']) ){ echo "<div class='alert alert-danger'>Pleae Enter Full Name</div>"; exit;}
+                elseif( empty($postData['email']) ){ echo "<div class='alert alert-danger'>Pleae Enter Email Address</div>"; exit;}
+                elseif (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL)) {echo "<div class='alert alert-danger'>Pleae Enter Vaild Email Address</div>"; exit;}
+                elseif( empty($postData['phone']) ){ echo "<div class='alert alert-danger'>Pleae Enter Mobile Number</div>"; exit;}
+                elseif(!preg_match("/^[+]?[1-9][0-9]{9,14}$/", $postData['phone'])) { echo "<div class='alert alert-danger'>Pleae Enter Valid 10 Digit Mobile Number</div>"; exit; }
+                $postData['folder'] = Text::slug($postData['email']);
+                $client = $this->Clients->newEmptyEntity();
+                $client->full_name = $postData['full_name'];
+                $client->email = $postData['email'];
+                $client->phone = $postData['phone'];
+                $client->folder = $postData['folder'];
+                $files = array_merge($postData['files_1'],$postData['files_2'],$postData['files_3'],$postData['files_4'],$postData['files_5']);
+                $files = array_filter($files);
+                if(empty($files)){ echo "<div class='alert alert-danger'>Pleae upload at least one file.</div>"; exit; }
+                else{
+
+                    try {
+                        if ($this->Clients->save($client)) {
+                            $id = $client->id;
+                            $tot = $this->_up_files($files, $id,$postData['folder']);
+                            if($tot > 0 ){
+                                echo "<script>$('.rm_div').html('');</script>";
+                                echo "<div class='alert alert-success'>Total $tot Files has been uploaded.</div>";
+                            }else{ echo '<div class="alert alert-danger" role="alert">Files are not uploaded. Please try again.</div>'; }
+                        }    
+                    } catch (\Throwable $th) {
+                        echo '<div class="alert alert-danger">Please try again.</div>'; 
+                    }
                 }
             }
-
             exit;
         }
     }
