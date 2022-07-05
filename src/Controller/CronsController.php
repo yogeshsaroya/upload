@@ -82,7 +82,7 @@ class CronsController extends AppController
                         <tr><td>This file will be deleted after 8hrs. <br>Thanks </td></tr></table></body></html>";
 
                     $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
-                        <tr><td>This is the confirmation email of bellow files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
+                        <tr><td>This is the confirmation email of below files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
                         <tr><td><br>Thanks </td></tr></table></body></html>";
                         
 
@@ -95,8 +95,8 @@ class CronsController extends AppController
                         ->deliver($msg); */
 
                     
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')->setSubject('New Files uploaded - ' . DATE) ->deliver($msg);
-                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded on ' . DATE) ->deliver($msg_user);
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
+                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
                     
                     $list->is_notified = 2;
                     $this->Clients->save($list);
