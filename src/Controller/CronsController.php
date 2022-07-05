@@ -56,7 +56,7 @@ class CronsController extends AppController
             //'className' => 'Debug',
             'tls' => true,
             'port' => 587,
-            'host' => 'relay-hosting.secureserver.net',
+            'host' => 'smtp.office365.com',
             'username' => 'admin@roifelawgroup.com',
             'password' => '@dmin365'
         ]);
@@ -66,7 +66,7 @@ class CronsController extends AppController
         $res = $mailer
             ->setEmailFormat('both')
             ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
-            ->setTo('yogeshsaroya@gmail.com')
+            ->setTo('staff@roifelawgroup.com')
             ->setSubject('New File uploaded -' . DATE)
             ->deliver('Hello - '.rand(123,987));
             pr($res);
