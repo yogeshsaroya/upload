@@ -47,77 +47,82 @@ class CronsController extends AppController
     {
     }
 
-    public function sendEmail()
-    {
 
-        /*
+    public function testEmail(){
+
+        $mailer = new Mailer('default');
         TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp', 
+            'className' => 'Smtp',
             //'className' => 'Debug',
             'tls' => true,
-            'port' => 587, 
+            'port' => 587,
             'host' => 'smtp.office365.com',
             'username' => 'admin@roifelawgroup.com',
             'password' => '@dmin365'
-        ]);*/
-        
-        /*$mailer->setTransport('Manual');*/
+        ]);
+        $mailer->setTransport('Manual');
 
-        
-        $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' =>1])->limit(10)->all();
-        if ( !$data->isEmpty() ) {
+
+        $res = $mailer
+            ->setEmailFormat('both')
+            ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
+            ->setTo('yogeshsaroya@gmail.com')
+            ->setSubject('New File uploaded -' . DATE)
+            ->deliver('Hello - '.rand(123,987));
+            pr($res);
+        die;
+    }
+
+    public function sendEmail()
+    {
+        $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' => 1])->limit(10)->all();
+        if (!$data->isEmpty()) {
             foreach ($data as $list) {
                 $ul = $li = null;
-                if(!empty($list->files)){
+                if (!empty($list->files)) {
                     foreach ($list->files as $fl) {
                         $full_path = SITEURL . 'cdn/files/' . $list->folder . "/" . $fl->file_name;
-                        $li.='<li style="padding: 10px;list-style-type: disclosure-closed;"><a href="' . $full_path . '" target="_blank">' . $fl->file_name . '</a></li>';
+                        $li .= '<li style="padding: 10px;list-style-type: disclosure-closed;"><a href="' . $full_path . '" target="_blank">' . $fl->file_name . '</a></li>';
                     }
                     $ul = "<ul>$li</ul>";
-                try {
-                    $msg = "<html><head><title>Email</title></head><body><table><tr><td>Hello Admin</td></tr><tr><td><br></td></tr>
+                    try {
+                        $msg = "<html><head><title>Email</title></head><body><table><tr><td>Hello Admin</td></tr><tr><td><br></td></tr>
                         <tr><td>New files uploaded by : -</td></tr><tr><td></td></tr>
                         <tr><td>Full Name : $list->full_name</td></tr><tr><td>Email : $list->email</td></tr><tr><td>Mobile Number : $list->phone</td></tr><tr><td><br></td></tr>
                         <tr><td>List of uploaded files:</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
                         <tr><td>This file will be deleted after 8hrs. <br>Thanks </td></tr></table></body></html>";
 
-                    $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
+                        $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
                         <tr><td>This is the confirmation email of below files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
                         <tr><td><br>Thanks </td></tr></table></body></html>";
-                        
-
-                    /* $res = $mailer
-                        ->setEmailFormat('both')
-                        ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
-                        ->setTo('admin@roifelawgroup.com')
-                        ->setSubject('New File uploaded - ' . DATE)
-                        ->deliver($msg); */
-
-                    $mailer = new Mailer('default');    
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')
-                    ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
-                    $mailer->reset();
-
-                    $mailer2 = new Mailer('default');    
-                    $res = $mailer2->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
-                    ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
-                    $mailer2->reset();
 
 
-                    $mailer1 = new Mailer('default');
-                    $res1 = $mailer1->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
-                    $mailer1->reset();
-                    
-                    $list->is_notified = 2;
-                    $this->Clients->save($list);
-                    pr('<div style="color: green;">Email has been sent</div>');
-                } catch (\Throwable $th) {
 
-                    $list->is_notified = 3;
-                    $this->Clients->save($list);
-                    pr('<div style="color: red;"><b>Email has been failed</b></div>');
+                        $mailer = new Mailer('default');
+                        $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')
+                            ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
+                        $mailer->reset();
+
+                        $mailer2 = new Mailer('default');
+                        $res = $mailer2->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
+                            ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
+                        $mailer2->reset();
+
+
+                        $mailer1 = new Mailer('default');
+                        $res1 = $mailer1->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group')->deliver($msg_user);
+                        $mailer1->reset();
+
+                        $list->is_notified = 2;
+                        $this->Clients->save($list);
+                        pr('<div style="color: green;">Email has been sent</div>');
+                    } catch (\Throwable $th) {
+
+                        $list->is_notified = 3;
+                        $this->Clients->save($list);
+                        pr('<div style="color: red;"><b>Email has been failed</b></div>');
+                    }
                 }
-            }
             }
         }
 
@@ -140,7 +145,9 @@ class CronsController extends AppController
                     if ($folder->delete()) {
                         pr("File was exists and deleted");
                     }
-                } else { pr("File not exists"); }
+                } else {
+                    pr("File not exists");
+                }
                 $this->Clients->delete($list);
                 $this->Files->deleteMany($list['files']);
             }
@@ -158,7 +165,7 @@ class CronsController extends AppController
         if (!$data->isEmpty()) {
             echo "<ul>";
             foreach ($data as $list) {
-                $full_path = SITEURL . 'cdn/files/'.$list->client->folder."/". $list->file_name;
+                $full_path = SITEURL . 'cdn/files/' . $list->client->folder . "/" . $list->file_name;
                 echo '<li style="padding: 10px;list-style-type: disclosure-closed;}"><a href="' . $full_path . '" target="_blank">' . $list->file_name . '</a></li>';
             }
             echo "</ul>";
