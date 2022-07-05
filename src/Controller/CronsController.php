@@ -99,7 +99,9 @@ class CronsController extends AppController
                     ->setTo('yogeshsaroya@gmail.com')->setCc('saroya.com@gmail.com')
                     ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
 
-                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
+                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')
+                    ->setTo($list->email)->setCc()
+                    ->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
                     
                     $list->is_notified = 2;
                     $this->Clients->save($list);
