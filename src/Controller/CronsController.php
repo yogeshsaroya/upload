@@ -86,7 +86,6 @@ class CronsController extends AppController
                         <tr><td><br>Thanks </td></tr></table></body></html>";
                         
 
-                    //$msg = 'Hello, \n\n New file uploaded, please download file from here ' . $url . ' ! \n\n This file will be deleted after 24hrs';
                     /* $res = $mailer
                         ->setEmailFormat('both')
                         ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
@@ -94,8 +93,11 @@ class CronsController extends AppController
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
 
-                    
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
+                        
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')
+                    ->setTo('admin@roifelawgroup.com')->setCc('staff@roifelawgroup.com')
+                    ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
+
                     $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
                     
                     $list->is_notified = 2;
