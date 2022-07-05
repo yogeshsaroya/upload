@@ -85,7 +85,6 @@ class UsersController extends AppController
 
         if ($this->request->is('ajax')) {
             if (!empty($this->request->getData())) {
-                $a1 = $a2 = $a3 = $a4 = $a5 = 0;
                 $postData = $this->request->getData();
 
                 if( empty($postData['full_name']) ){ echo "<div class='alert alert-danger'>Pleae Enter Full Name</div>"; exit;}
@@ -114,6 +113,7 @@ class UsersController extends AppController
                             }else{ echo '<div class="alert alert-danger" role="alert">Files are not uploaded. Please try again.</div>'; }
                         }    
                     } catch (\Throwable $th) {
+                        pr($th);
                         echo '<div class="alert alert-danger">Please try again.</div>'; 
                     }
                 }
