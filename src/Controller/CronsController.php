@@ -68,7 +68,7 @@ class CronsController extends AppController
             ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
             ->setTo('staff@roifelawgroup.com')
             ->setSubject('New File uploaded -' . DATE)
-            ->deliver('Hello - '.rand(123,987));
+            ->deliver('Test message from Developers Server - '.rand(123,987));
             pr($res);
         die;
     }
