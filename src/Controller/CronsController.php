@@ -56,7 +56,7 @@ class CronsController extends AppController
             //'className' => 'Debug',
             'tls' => true,
             'port' => 587,
-            'host' => 'smtpout.secureserver.net',
+            'host' => 'relay-hosting.secureserver.net',
             'username' => 'admin@roifelawgroup.com',
             'password' => '@dmin365'
         ]);
