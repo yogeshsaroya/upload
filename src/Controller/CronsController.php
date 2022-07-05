@@ -60,7 +60,7 @@ class CronsController extends AppController
             'username' => 'admin@roifelawgroup.com',
             'password' => '@dmin365'
         ]);*/
-        $mailer = new Mailer('default');
+        
         /*$mailer->setTransport('Manual');*/
 
         
@@ -93,7 +93,7 @@ class CronsController extends AppController
                         ->setSubject('New File uploaded - ' . DATE)
                         ->deliver($msg); */
 
-                        
+                    $mailer = new Mailer('default');    
                     $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')
                     //->setTo('admin@roifelawgroup.com')->setCc('staff@roifelawgroup.com')
                     ->setTo('yogeshsaroya@gmail.com')->setCc('saroya.com@gmail.com')
@@ -101,8 +101,9 @@ class CronsController extends AppController
                     $mailer->reset();
 
 
-                    $res1 = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
-                    $mailer->reset();
+                    $mailer1 = new Mailer('default');
+                    $res1 = $mailer1->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group') ->deliver($msg_user);
+                    $mailer1->reset();
                     
                     $list->is_notified = 2;
                     $this->Clients->save($list);
