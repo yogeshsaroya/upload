@@ -55,7 +55,7 @@ class CronsController extends AppController
             'className' => 'Smtp',
             //'className' => 'Debug',
             'tls' => true,
-            'port' => 587,
+            'port' => 465,
             'host' => 'mail.superpad.finance',
             'username' => 'support@superpad.finance',
             'password' => 'super@1234!'
