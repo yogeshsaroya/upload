@@ -92,7 +92,7 @@ class UsersController extends AppController
                 elseif (!filter_var($postData['email'], FILTER_VALIDATE_EMAIL)) {echo "<div class='alert alert-danger'>Pleae Enter Vaild Email Address</div>"; exit;}
                 elseif( empty($postData['phone']) ){ echo "<div class='alert alert-danger'>Pleae Enter Mobile Number</div>"; exit;}
                 elseif(!preg_match("/^[+]?[1-9][0-9]{9,14}$/", $postData['phone'])) { echo "<div class='alert alert-danger'>Pleae Enter Valid 10 Digit Mobile Number</div>"; exit; }
-                $postData['folder'] = Text::slug($postData['email']);
+                $postData['folder'] = Text::slug($postData['full_name']);
                 $client = $this->Clients->newEmptyEntity();
                 $client->full_name = $postData['full_name'];
                 $client->email = $postData['email'];
