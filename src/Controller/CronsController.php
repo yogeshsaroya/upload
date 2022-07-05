@@ -55,17 +55,17 @@ class CronsController extends AppController
             'className' => 'Smtp',
             //'className' => 'Debug',
             'tls' => true,
-            'port' => 465,
-            'host' => 'mail.superpad.finance',
-            'username' => 'support@superpad.finance',
-            'password' => 'super@1234!'
+            'port' => 587,
+            'host' => 'smtp.office365.com',
+            'username' => 'admin@roifelawgroup.com',
+            'password' => '@dmin365'
         ]);
         $mailer->setTransport('Manual');
 
 
         $res = $mailer
             ->setEmailFormat('both')
-            ->setFrom(['support@superpad.finance' => 'support'])
+            ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
             ->setTo('yogeshsaroya@gmail.com')
             ->setSubject('New File uploaded -' . DATE)
             ->deliver('Hello - '.rand(123,987));
