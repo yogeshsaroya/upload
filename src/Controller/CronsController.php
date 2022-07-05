@@ -94,10 +94,14 @@ class CronsController extends AppController
                         ->deliver($msg); */
 
                     $mailer = new Mailer('default');    
-                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')
-                    ->setTo('admin@roifelawgroup.com')->setCc('staff@roifelawgroup.com')
+                    $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')
                     ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
                     $mailer->reset();
+
+                    $mailer2 = new Mailer('default');    
+                    $res = $mailer2->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
+                    ->setSubject('Upload to Roife Law Group from: '.$list->full_name) ->deliver($msg);
+                    $mailer2->reset();
 
 
                     $mailer1 = new Mailer('default');
