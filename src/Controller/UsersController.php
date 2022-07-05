@@ -113,7 +113,6 @@ class UsersController extends AppController
                             }else{ echo '<div class="alert alert-danger" role="alert">Files are not uploaded. Please try again.</div>'; }
                         }    
                     } catch (\Throwable $th) {
-                        pr($th);
                         echo '<div class="alert alert-danger">Please try again.</div>'; 
                     }
                 }
