@@ -52,13 +52,9 @@ class CronsController extends AppController
 
         
         TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp',
-            //'className' => 'Debug',
-            'tls' => true,
-            'port' => 587,
+            'className' => 'Smtp','tls' => true,'port' => 587,
             'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
-            'username' => 'info@roifelawgroup.info',
-            'password' => 'Q9}kE[cJ(vXQ'
+            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
         ]);
         $mailer = new Mailer('default');
         $mailer->setTransport('Manual');
@@ -78,6 +74,15 @@ class CronsController extends AppController
     {
         $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' => 1])->limit(10)->all();
         if (!$data->isEmpty()) {
+
+        TransportFactory::setConfig('Manual', [
+            'className' => 'Smtp','tls' => true,'port' => 587,
+            'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
+            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
+        ]);
+        $mailer = new Mailer('default');
+        $mailer->setTransport('Manual');
+
             foreach ($data as $list) {
                 $ul = $li = null;
                 if (!empty($list->files)) {
@@ -99,20 +104,15 @@ class CronsController extends AppController
 
 
 
-                        $mailer = new Mailer('default');
-                        $res = $mailer->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')
+                        
+                        $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('admin@roifelawgroup.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
-                        $mailer->reset();
-
-                        $mailer2 = new Mailer('default');
-                        $res = $mailer2->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
+                                                
+                        $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
-                        $mailer2->reset();
-
-
-                        $mailer1 = new Mailer('default');
-                        $res1 = $mailer1->setFrom(['upload@roifelawgroup.com' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group')->deliver($msg_user);
-                        $mailer1->reset();
+                        
+                        $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group')->deliver($msg_user);
+                        
 
                         $list->is_notified = 2;
                         $this->Clients->save($list);
