@@ -48,28 +48,6 @@ class CronsController extends AppController
     }
 
 
-    public function testEmail(){
-
-        
-        TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp','tls' => true,'port' => 587,
-            'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
-            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
-        ]);
-        $mailer = new Mailer('default');
-        $mailer->setTransport('Manual');
-
-
-        $res = $mailer
-            ->setEmailFormat('both')
-            ->setFrom(['info@roifelawgroup.info' => 'Info'])
-            ->setTo('yogeshsaroya@gmail.com')
-            ->setSubject('New File uploaded -' . DATE)
-            ->deliver('Test message from Developers Server - '.rand(123,987));
-            pr($res);
-        die;
-    }
-
     public function sendEmail()
     {
         $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' => 1])->limit(10)->all();
