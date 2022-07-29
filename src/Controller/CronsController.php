@@ -56,17 +56,17 @@ class CronsController extends AppController
             //'className' => 'Debug',
             'tls' => true,
             'port' => 587,
-            'host' => 'smtp.office365.com',
-            'username' => 'admin@roifelawgroup.com',
-            'password' => '@dmin365'
+            'host' => 'info@roifelawgroup.info',
+            'username' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
+            'password' => 'Q9}kE[cJ(vXQ'
         ]);
         $mailer->setTransport('Manual');
 
 
         $res = $mailer
             ->setEmailFormat('both')
-            ->setFrom(['admin@roifelawgroup.com' => 'Admin'])
-            ->setTo('staff@roifelawgroup.com')
+            ->setFrom(['info@roifelawgroup.info' => 'Info'])
+            ->setTo('yogeshsaroya@gmail.com')
             ->setSubject('New File uploaded -' . DATE)
             ->deliver('Test message from Developers Server - '.rand(123,987));
             pr($res);
