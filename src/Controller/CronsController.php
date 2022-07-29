@@ -83,7 +83,7 @@ class CronsController extends AppController
 
 
                         
-                        $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('administrator@roifelawgroup.com')
+                        $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('roifelawgroup@gmail.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
                                                 
                         $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('arthur.gallagher@roifelawgroup.com')
