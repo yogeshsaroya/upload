@@ -55,7 +55,8 @@ class CronsController extends AppController
 
         TransportFactory::setConfig('Manual', [
             'className' => 'Smtp','tls' => true,'port' => 587,
-            'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
+            //'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
+            'host' => 'mail.roifelawgroup.info',
             'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
         ]);
         $mailer = new Mailer('default');
