@@ -109,10 +109,7 @@ class CronsController extends AppController
                         $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
                         <tr><td>This is the confirmation email of below files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
                         <tr><td><br>Thanks </td></tr></table></body></html>";
-
-
-
-                        
+                       
                         $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('roifelawgroup@gmail.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
                                                 
