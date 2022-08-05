@@ -47,6 +47,39 @@ class CronsController extends AppController
     {
     }
 
+    public function testEmail(){
+
+        $mailer = new Mailer('default');
+        
+        
+        TransportFactory::setConfig('Manual', [
+            'className' => 'Smtp','tls' => false,
+            'port' => 25,
+            'host' => 'localhost',
+            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
+        ]); 
+        
+        /*
+        TransportFactory::setConfig('Manual', [
+            'className' => 'Smtp','tls' => true,'port' => 587,
+            'host' => 'mail.superpad.finance',
+            'username' => 'support@superpad.finance','password' => 'super@1234!'
+        ]); */
+        
+        $mailer->setTransport('Manual');
+
+        $res = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('yogeshsaroya@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
+        $res2 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('roifelawgroup@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
+        $res3 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('arthur.gallagher@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
+        $res4 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('staff@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
+        
+        
+        pr($res);
+        pr($res2);
+        pr($res3);
+        pr($res4);
+        die;
+    }
 
     public function sendEmail()
     {
@@ -54,12 +87,10 @@ class CronsController extends AppController
         if (!$data->isEmpty()) {
 
         TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp',
-            'tls' => false,
-            'port' => 25,
+            'className' => 'Smtp','tls' => true,'port' => 587,
             //'host' => 'a2plvcpnl424424.prod.iad2.secureserver.net',
             //'host' => 'mail.roifelawgroup.info',
-            'host' => 'localhost',
+            'host' => 'mail.roifelawgroup.info',
             'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
         ]);
         $mailer = new Mailer('default');
