@@ -96,6 +96,7 @@ class CronsController extends AppController
                         $this->Clients->save($list);
                         pr('<div style="color: green;">Email has been sent</div>');
                     } catch (\Throwable $th) {
+                        pr($th);
 
                         $list->is_notified = 3;
                         $this->Clients->save($list);
