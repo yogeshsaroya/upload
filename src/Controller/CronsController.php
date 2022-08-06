@@ -24,6 +24,10 @@ use Cake\Mailer\TransportFactory;
 use Cake\Filesystem\Folder;
 use Cake\Filesystem\File;
 
+use Kunnu\Dropbox\Dropbox;
+use Kunnu\Dropbox\DropboxApp;
+use Kunnu\Dropbox\DropboxFile;
+use Kunnu\Dropbox\Exceptions\DropboxClientException;
 /**
  * Static content controller
  * This controller will render views from templates/Pages/
@@ -47,31 +51,71 @@ class CronsController extends AppController
     {
     }
 
-    public function testEmail(){
+    public function dropbox()
+    {
+        include('dropbox/vendor/autoload.php');
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BMwU4jbrQRhvhegsRJYU16jl3MQx837DINL4C8DmE6sQUWpz3L8PoY6XcWChFVymS96KXayvQrS5MEyCO60lCIH9EeZBl3wXTMIlRUR35jayNhiNXzl-VKrGGnEMJmgqjU1U3RmC7SQo");
+        $dropbox = new Dropbox($app);
+
+        $data = $this->Files->find()->contain(['Clients'])->all();
+        if (!$data->isEmpty()) {
+            echo "<ul>";
+            foreach ($data as $list) {
+                $filePath = 'cdn/files/' . $list->client->folder . "/" . $list->file_name;
+                $fileName = $list->client->folder . "/" . $list->file_name;
+                try {
+                    // Create Dropbox File from Path
+                    $dropboxFile = new DropboxFile($filePath);
+        
+                    // Upload the file to Dropbox
+                    $uploadedFile = $dropbox->upload($dropboxFile, "/FTP_upload/" . $fileName, ['autorename' => true]);
+        
+                    // File Uploaded
+                    echo $uploadedFile->getPathDisplay();
+                    echo "<br>";
+                } catch (DropboxClientException $e) {
+                    echo $e->getMessage();
+                }
+                
+                
+            }
+            
+        } else {
+            echo "Empty";
+        }
+
+        die;
+        
+
+        exit;
+    }
+
+    public function testEmail()
+    {
 
         $mailer = new Mailer('default');
-        
-        
+
+
         TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp','tls' => false,'port' => 25,'host' => 'localhost',
-            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
-        ]); 
-        
+            'className' => 'Smtp', 'tls' => false, 'port' => 25, 'host' => 'localhost',
+            'username' => 'info@roifelawgroup.info', 'password' => 'Q9}kE[cJ(vXQ'
+        ]);
+
         /*
         TransportFactory::setConfig('Manual', [
             'className' => 'Smtp','tls' => true,'port' => 587,
             'host' => 'mail.superpad.finance',
             'username' => 'support@superpad.finance','password' => 'super@1234!'
         ]); */
-        
+
         $mailer->setTransport('Manual');
 
-        $res = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('yogeshsaroya@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
-        $res2 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('roifelawgroup@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
-        $res3 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('arthur.gallagher@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
-        $res4 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('staff@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - '.rand(123,987));
-        
-        
+        $res = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('yogeshsaroya@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - ' . rand(123, 987));
+        $res2 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('roifelawgroup@gmail.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - ' . rand(123, 987));
+        $res3 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('arthur.gallagher@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - ' . rand(123, 987));
+        $res4 = $mailer->setEmailFormat('both')->setFrom(['info@roifelawgroup.info' => 'Info'])->setTo('staff@roifelawgroup.com')->setSubject('Test email  -' . DATE)->deliver('Test message from Developers Server - ' . rand(123, 987));
+
+
         pr($res);
         pr($res2);
         pr($res3);
@@ -84,12 +128,12 @@ class CronsController extends AppController
         $data = $this->Clients->find()->contain(['Files'])->where(['Clients.is_notified' => 1])->limit(10)->all();
         if (!$data->isEmpty()) {
 
-        TransportFactory::setConfig('Manual', [
-            'className' => 'Smtp','tls' => false,'port' => 25,'host' => 'localhost',
-            'username' => 'info@roifelawgroup.info','password' => 'Q9}kE[cJ(vXQ'
-        ]);
-        $mailer = new Mailer('default');
-        $mailer->setTransport('Manual');
+            TransportFactory::setConfig('Manual', [
+                'className' => 'Smtp', 'tls' => false, 'port' => 25, 'host' => 'localhost',
+                'username' => 'info@roifelawgroup.info', 'password' => 'Q9}kE[cJ(vXQ'
+            ]);
+            $mailer = new Mailer('default');
+            $mailer->setTransport('Manual');
 
             foreach ($data as $list) {
                 $ul = $li = null;
@@ -109,15 +153,15 @@ class CronsController extends AppController
                         $msg_user = "<html><head><title>Email</title></head><body><table><tr><td>Hello $list->full_name</td></tr><tr><td><br></td></tr>
                         <tr><td>This is the confirmation email of below files was uploaded at Roife Law Group</td></tr><tr><td>$ul</td></tr><tr><td></td></tr>
                         <tr><td><br>Thanks </td></tr></table></body></html>";
-                       
+
                         $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('roifelawgroup@gmail.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
-                                                
+
                         $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo('staff@roifelawgroup.com')
                             ->setSubject('Upload to Roife Law Group from: ' . $list->full_name)->deliver($msg);
-                        
+
                         $mailer->setFrom(['info@roifelawgroup.info' => 'Upload'])->setEmailFormat('both')->setTo($list->email)->setSubject('Files uploaded at Roife Law Group')->deliver($msg_user);
-                        
+
 
                         $list->is_notified = 2;
                         $this->Clients->save($list);
