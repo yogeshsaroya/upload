@@ -55,10 +55,10 @@ class CronsController extends AppController
     public function _refreshToken()
     {
         include('dropbox/vendor/autoload.php');
-        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4");
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", dropbox_token);
         $dropbox = new Dropbox($app);
         $authHelper = $dropbox->getAuthHelper();
-        $accessToken = $authHelper->getRefreshedAccessToken("sl.BM1GTHdraQOY-UoCvol7pSYezsMsqm_MtTBDhbNx7zdoBiHB_ivhogZsPQLdB5yvYrEZlSxwNeImbMwlUUVRVsG_DNE8A-retELpAQFGzy9PJxIT9ADhNejGoL5G8fHTIoP_nSb8s0PI");
+        $accessToken = $authHelper->getRefreshedAccessToken(dropbox_token);
         pr($accessToken);
     }
 
@@ -67,7 +67,7 @@ class CronsController extends AppController
 
 
         include('dropbox/vendor/autoload.php');
-        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM1GTHdraQOY-UoCvol7pSYezsMsqm_MtTBDhbNx7zdoBiHB_ivhogZsPQLdB5yvYrEZlSxwNeImbMwlUUVRVsG_DNE8A-retELpAQFGzy9PJxIT9ADhNejGoL5G8fHTIoP_nSb8s0PI");
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", dropbox_token);
         $dropbox = new Dropbox($app);
         $authHelper = $dropbox->getAuthHelper();
         $callbackUrl = SITEURL . "crons/dropbox_callback";
@@ -81,11 +81,22 @@ class CronsController extends AppController
         }
         die;
     }
+    public function dropboxLogin()
+    {
+        include('dropbox/vendor/autoload.php');
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", dropbox_token );
+        $dropbox = new Dropbox($app);
+        $authHelper = $dropbox->getAuthHelper();
+        $callbackUrl = SITEURL."crons/dropbox_callback";
+        $authUrl = $authHelper->getAuthUrl($callbackUrl);
+        pr($authUrl);die;
+    }
 
     public function dropbox()
     {
+        
         include('dropbox/vendor/autoload.php');
-        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM2AwiqITZXE10r02ECCy1r1I4DDwFxhr9WT6Q6EQ7vEB-IWlkiEQq7QyIGNEMqse6V-P5A-5kBkgjnoLYXH8ZlDk8eGi-BI5dNvYr4U6EPLxPDMjPUhG0hDovJRHDrWPgEUF4pvHrKn");
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", dropbox_token );
         $dropbox = new Dropbox($app);
 
         /*
