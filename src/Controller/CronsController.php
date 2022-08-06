@@ -135,7 +135,7 @@ class CronsController extends AppController
                     echo "<br>";
 
                     $list->client->is_syncro = 2;
-                    $this->Clients->save($list);
+                    $this->Clients->save($list->client);
                 } catch (DropboxClientException $e) {
                     pr($e->getMessage());
                     die;
