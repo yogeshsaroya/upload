@@ -134,7 +134,7 @@ class CronsController extends AppController
                     echo $uploadedFile->getPathDisplay();
                     echo "<br>";
 
-                    $list->is_syncro = 2;
+                    $list->client->is_syncro = 2;
                     $this->Clients->save($list);
                 } catch (DropboxClientException $e) {
                     pr($e->getMessage());
