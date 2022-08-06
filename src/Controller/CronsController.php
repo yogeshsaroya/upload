@@ -54,7 +54,7 @@ class CronsController extends AppController
     public function dropbox()
     {
         include('dropbox/vendor/autoload.php');
-        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BMwU4jbrQRhvhegsRJYU16jl3MQx837DINL4C8DmE6sQUWpz3L8PoY6XcWChFVymS96KXayvQrS5MEyCO60lCIH9EeZBl3wXTMIlRUR35jayNhiNXzl-VKrGGnEMJmgqjU1U3RmC7SQo");
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM0EaFiw1aTE1YMSj5NsDxaJIWVRqwrGHKupoUOYRo-AbLqDVbo7Mv_xkQd3lySqpLN1iWtd6djIMB-zNVtFI_V-c3MwWQi_NzArsoSHGqBoM7AtdmogLG5t3UAuu4GN9m9Fj-NJYqh1");
         $dropbox = new Dropbox($app);
 
         $data = $this->Files->find()->contain(['Clients'])->all();
@@ -83,10 +83,6 @@ class CronsController extends AppController
         } else {
             echo "Empty";
         }
-
-        die;
-        
-
         exit;
     }
 
