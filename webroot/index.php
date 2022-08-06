@@ -1,4 +1,6 @@
 <?php
+session_start();
+
 /**
  * The Front Controller for handling every request
  *

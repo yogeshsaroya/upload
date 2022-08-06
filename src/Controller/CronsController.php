@@ -28,6 +28,7 @@ use Kunnu\Dropbox\Dropbox;
 use Kunnu\Dropbox\DropboxApp;
 use Kunnu\Dropbox\DropboxFile;
 use Kunnu\Dropbox\Exceptions\DropboxClientException;
+
 /**
  * Static content controller
  * This controller will render views from templates/Pages/
@@ -51,13 +52,61 @@ class CronsController extends AppController
     {
     }
 
+    public function _refreshToken()
+    {
+        include('dropbox/vendor/autoload.php');
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4");
+        $dropbox = new Dropbox($app);
+        $authHelper = $dropbox->getAuthHelper();
+        $accessToken = $authHelper->getRefreshedAccessToken("sl.BM1GTHdraQOY-UoCvol7pSYezsMsqm_MtTBDhbNx7zdoBiHB_ivhogZsPQLdB5yvYrEZlSxwNeImbMwlUUVRVsG_DNE8A-retELpAQFGzy9PJxIT9ADhNejGoL5G8fHTIoP_nSb8s0PI");
+        pr($accessToken);
+    }
+
+    public function dropboxCallback()
+    {
+
+
+        include('dropbox/vendor/autoload.php');
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM1GTHdraQOY-UoCvol7pSYezsMsqm_MtTBDhbNx7zdoBiHB_ivhogZsPQLdB5yvYrEZlSxwNeImbMwlUUVRVsG_DNE8A-retELpAQFGzy9PJxIT9ADhNejGoL5G8fHTIoP_nSb8s0PI");
+        $dropbox = new Dropbox($app);
+        $authHelper = $dropbox->getAuthHelper();
+        $callbackUrl = SITEURL . "crons/dropbox_callback";
+
+        if (isset($_GET['code']) && isset($_GET['state'])) {
+            $code = $_GET['code'];
+            $state = $_GET['state'];
+            //Fetch the AccessToken
+            $accessToken = $authHelper->getAccessToken($code, $state, $callbackUrl);
+            echo $accessToken->getToken();
+        }
+        die;
+    }
+
     public function dropbox()
     {
         include('dropbox/vendor/autoload.php');
-        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM0EaFiw1aTE1YMSj5NsDxaJIWVRqwrGHKupoUOYRo-AbLqDVbo7Mv_xkQd3lySqpLN1iWtd6djIMB-zNVtFI_V-c3MwWQi_NzArsoSHGqBoM7AtdmogLG5t3UAuu4GN9m9Fj-NJYqh1");
+        $app = new DropboxApp("whteik9yipt06p1", "ign4n804lg19se4", "sl.BM2AwiqITZXE10r02ECCy1r1I4DDwFxhr9WT6Q6EQ7vEB-IWlkiEQq7QyIGNEMqse6V-P5A-5kBkgjnoLYXH8ZlDk8eGi-BI5dNvYr4U6EPLxPDMjPUhG0hDovJRHDrWPgEUF4pvHrKn");
         $dropbox = new Dropbox($app);
 
-        $data = $this->Files->find()->contain(['Clients'])->all();
+        /*
+        $authHelper = $dropbox->getAuthHelper();
+        $callbackUrl = SITEURL."crons/dropbox_callback";
+        $authUrl = $authHelper->getAuthUrl($callbackUrl);
+        pr($authUrl);die;
+        */
+
+        /*
+        
+        $fileMetadata = $dropbox->getMetadata("/FTP_upload/yogesh-saroya");
+        $a = $fileMetadata->getName();
+        pr($fileMetadata);
+        $a = $dropbox->postToAPI('/files/permanently_delete', ['path' => "/FTP_upload"]);
+        pr($a);die;
+        */
+
+
+        $data = $this->Files->find()->contain(['Clients'])->where(['Clients.is_syncro' => 1])->all();
+
         if (!$data->isEmpty()) {
             echo "<ul>";
             foreach ($data as $list) {
@@ -66,20 +115,21 @@ class CronsController extends AppController
                 try {
                     // Create Dropbox File from Path
                     $dropboxFile = new DropboxFile($filePath);
-        
+
                     // Upload the file to Dropbox
                     $uploadedFile = $dropbox->upload($dropboxFile, "/FTP_upload/" . $fileName, ['autorename' => true]);
-        
+
                     // File Uploaded
                     echo $uploadedFile->getPathDisplay();
                     echo "<br>";
+
+                    $list->is_syncro = 2;
+                    $this->Clients->save($list);
                 } catch (DropboxClientException $e) {
-                    echo $e->getMessage();
+                    pr($e->getMessage());
+                    die;
                 }
-                
-                
             }
-            
         } else {
             echo "Empty";
         }
