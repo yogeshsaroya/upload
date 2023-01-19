@@ -227,4 +227,7 @@ define('WEBTITLE','Roife Law Group');
 define("DATE", date("Y-m-d H:i:s"));
 define("TODAYDATE", date("Y-m-d"));
 
+define("dropbox_APP_KEY", 'whteik9yipt06p1');
+define("dropbox_APP_SECRET", 'ign4n804lg19se4');
+
 
