@@ -112,6 +112,7 @@ class CronsController extends AppController
     public function dropbox()
     {
         $dropbox_token = $this->_refreshToken();
+        pr($dropbox_token);die;
         if($dropbox_token['status'] == 'okay' && !empty($dropbox_token['token'] )){
             include('dropbox/vendor/autoload.php');
             $app = new DropboxApp(dropbox_APP_KEY, dropbox_APP_SECRET, $dropbox_token['token']);

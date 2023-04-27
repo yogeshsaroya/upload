@@ -218,7 +218,7 @@ TypeFactory::map('time', StringType::class);
 
 
 
-define('SITEURL', 'http://localhost:8888/cakephp/upload/');
+define('SITEURL', 'http://localhost:8888/upload/');
 define('MAIN_URL', 'https://roifelawgroup.com/');
 
 //date_default_timezone_set('US/Eastern');
